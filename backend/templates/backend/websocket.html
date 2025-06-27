@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Sockets Setup</title>
+</head>
+<body>
+    <h1>Web Scokets </h1>
+    <form action="" method="post">
+        <input type="text" name="message" id="message">
+        <button type="submit">Send Message</button>
+    </form>
+    <div id="messages">
+    </div>
+    <script>
+        let url=`ws://${window.location.host}/ws/socket-server/`;
+        const socket = new WebSocket(url);
+        socket.onmessage= (e)=>{
+            let data = JSON.parse(e.data);  
+            console.log(`Data received: ${data.message}`);
+
+            if (data.type=="chat"){
+                let messages=document.getElementById('messages');
+                messages.insertAdjacentHTML('beforeend', 
+                `<p>
+                    <div>${data.message}</div>
+                </p>`);   
+            }
+        }
+
+        socket.onclose=(e)=>{
+            console.error('WebSocket closed unexpectedly');
+        }
+
+        document.querySelector('form').onsubmit = function(e) {
+            e.preventDefault();
+            let message = document.getElementById('message').value;
+            socket.send(JSON.stringify({
+                'message': message
+            }));
+            document.getElementById('message').value = '';
+        };
+        
+    </script>
+</body>
+</html>

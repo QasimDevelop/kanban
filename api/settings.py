@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
+    'daphne',  # Add this line to include Channels
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -41,6 +43,18 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",  # Add this line to include CORS headers
 ]
+
+ASGI_APPLICATION = "api.asgi.application"  # Replace 'api' with your project name
+
+# Channels Redis backend
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

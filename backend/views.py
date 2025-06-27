@@ -71,3 +71,5 @@ def task_result(request, task_id):
     result = AsyncResult(task_id)
     return render(request,"backend/task_result.html", {"result": result})
 
+def websocket_view(request):
+    return render(request, 'backend/websocket.html')

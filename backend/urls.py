@@ -18,4 +18,5 @@ urlpatterns = [
     path('simple-task', views.simpleTask, name='simple_task'),
     path('task-with-error', views.taskWithError, name='task_with_error'),
     path('task_result/<str:task_id>/', views.task_result, name='task_result'),
+    path('websocket/', views.websocket_view, name='websocket_view'),
 ]
