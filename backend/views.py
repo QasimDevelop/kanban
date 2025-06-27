@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import render
 # Create your views here.
+from celery.result import AsyncResult
 from backend.models import Board, List, Card, Comment, Attachment, ActivityLog, Label
 from rest_framework import viewsets
 from .serializers import (
@@ -46,3 +49,25 @@ class ActivityLogViewSet(viewsets.ModelViewSet):
 class LabelViewSet(viewsets.ModelViewSet):
     queryset = Label.objects.all()
     serializer_class = LabelSerializer
+
+from .tasks import example_task, example_task_with_error
+
+def simpleTask(request):
+    print("This is a simple task")
+    result= example_task.delay(10,20)
+    print(f"Task ID: {result.id}")
+    return render(request, 'backend/simple_task.html', {"result": result, "status": "Task started"})
+
+def taskWithError(request):
+    print("This is a task that will raise an error")
+    try:
+        result = example_task_with_error.delay(10, 20)
+        print(f"Task ID: {result.id}")
+        return JsonResponse({"task_id": result.id, "status": "Task started"})
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+def task_result(request, task_id):
+    result = AsyncResult(task_id)
+    return render(request,"backend/task_result.html", {"result": result})
+

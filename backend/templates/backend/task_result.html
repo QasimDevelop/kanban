@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Task Results</h1>
+    <p>Task ID: {{ result.id }}</p>
+    <p>Task Name: {{ result.name }}</p>
+    <p>Task Result: {{ result.result }}</p> 
+    <p>Task Status: {{ result.status }}</p>
+
+    {% if result.id %}
+        <a href="{% url 'task_result' result.id %}">Task Result</a>
+    {% endif %}
+</body>
+</html>

@@ -14,5 +14,8 @@ router.register(r'activitylogs', views.ActivityLogViewSet)
 router.register(r'labels', views.LabelViewSet)
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('simple-task', views.simpleTask, name='simple_task'),
+    path('task-with-error', views.taskWithError, name='task_with_error'),
+    path('task_result/<str:task_id>/', views.task_result, name='task_result'),
 ]
