@@ -18,3 +18,9 @@ class CardAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'list', 'position', 'created_at', 'assigned_to')
     search_fields = ('title', 'list__name', 'assigned_to__username')
     list_filter = ('created_at', 'list', 'assigned_to')
+
+@admin.register(Comment)    
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'card', 'user', 'created_at')
+    search_fields = ('card__title', 'user__username')
+    list_filter = ('created_at', 'card')
